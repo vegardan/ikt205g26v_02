@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/pages/new_note.dart';
+import 'package:ikt205g26v_02/pages/signup.dart';
 import 'package:ikt205g26v_02/widgets/note_list.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +17,33 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 6, title: Text('CloudNotes')),
+      appBar: AppBar(
+        elevation: 6,
+        title: Text('CloudNotes'),
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 'logout') {
+                Supabase.instance.client.auth.signOut();
+
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SignupPage()));
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: Colors.redAccent),
+                    SizedBox(width: 4),
+                    Text('Logout', style: TextStyle(color: Colors.redAccent)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: NoteListWidget(key: _listKey),
       floatingActionButton: FloatingActionButton(
         tooltip: 'New note',
