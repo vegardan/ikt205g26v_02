@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/storage/note_service.dart';
+import 'package:ikt205g26v_02/utils/snackbar_utils.dart';
 
 class NewNotePage extends StatefulWidget {
   const NewNotePage({super.key});
@@ -55,6 +56,8 @@ class _NewNotePageState extends State<NewNotePage> {
                     await NoteService().createNote(_titleController.text.trim(), _textController.text.trim());
 
                     Navigator.of(context).pop();
+
+                    SnackBarUtils.infoSnackBar(context, 'Note created');
                   },
                   icon: Icon(Icons.save),
                   label: Text('Save'),

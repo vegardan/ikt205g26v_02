@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/pages/login.dart';
+import 'package:ikt205g26v_02/utils/snackbar_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignupPage extends StatefulWidget {
@@ -72,21 +73,9 @@ class _SignupPageState extends State<SignupPage> {
 
                             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const LoginPage()));
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Email verification sent', style: const TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.green,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
+                            SnackBarUtils.infoSnackBar(context, 'Email verification sent');
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Signup failed', style: const TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.redAccent,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
+                            SnackBarUtils.errorSnackBar(context, 'Signup failed');
 
                             setState(() {
                               _loading = false;

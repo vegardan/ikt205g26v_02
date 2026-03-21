@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/pages/home.dart';
 import 'package:ikt205g26v_02/pages/signup.dart';
+import 'package:ikt205g26v_02/utils/snackbar_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -73,21 +74,9 @@ class _LoginPageState extends State<LoginPage> {
 
                             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Login successful', style: const TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.green,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
+                            SnackBarUtils.infoSnackBar(context, 'Login successful');
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Login failed', style: const TextStyle(color: Colors.white)),
-                                backgroundColor: Colors.redAccent,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
+                            SnackBarUtils.errorSnackBar(context, 'Login failed');
 
                             setState(() {
                               _loading = false;

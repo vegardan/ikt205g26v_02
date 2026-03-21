@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/storage/note.dart';
 import 'package:ikt205g26v_02/storage/note_service.dart';
+import 'package:ikt205g26v_02/utils/snackbar_utils.dart';
 
 class EditNotePage extends StatefulWidget {
   final Note note;
@@ -68,6 +69,8 @@ class _EditNotePageState extends State<EditNotePage> {
                     widget.note.text = _textController.text;
 
                     Navigator.of(context).pop(true);
+
+                    SnackBarUtils.infoSnackBar(context, 'Note updated');
                   },
                   icon: Icon(Icons.save),
                   label: Text('Save'),
