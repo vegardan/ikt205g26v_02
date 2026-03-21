@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ikt205g26v_02/pages/details.dart';
 import 'package:ikt205g26v_02/storage/note.dart';
-import 'package:ikt205g26v_02/storage/shared_notes.dart';
+import 'package:ikt205g26v_02/storage/note_service.dart';
 
 class NoteListWidget extends StatefulWidget {
   const NoteListWidget({super.key});
@@ -20,7 +20,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
   }
 
   void _loadNotes() {
-    _notesFuture = SharedNotes().loadNotes();
+    _notesFuture = NoteService().getNotes();
   }
 
   void refresh() {
@@ -75,15 +75,17 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                 );
               },
               onDismissed: (_) async {
-                await SharedNotes().deleteNote(index);
+                await NoteService().deleteNote(note.id);
 
                 refresh();
               },
               child: ListTile(
                 title: Text(note.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                subtitle: Text(note.description, maxLines: 1, overflow: TextOverflow.ellipsis),
+                subtitle: Text(note.text, maxLines: 1, overflow: TextOverflow.ellipsis),
                 onTap: () async {
                   await Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsPage(note)));
+
+                  setState(() {});
                 },
               ),
             );

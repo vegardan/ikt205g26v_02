@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ikt205g26v_02/storage/note.dart';
-import 'package:ikt205g26v_02/storage/shared_notes.dart';
+import 'package:ikt205g26v_02/storage/note_service.dart';
 
 class NewNotePage extends StatefulWidget {
   const NewNotePage({super.key});
@@ -13,12 +12,12 @@ class _NewNotePageState extends State<NewNotePage> {
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  final _textController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
-    _descriptionController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -41,10 +40,10 @@ class _NewNotePageState extends State<NewNotePage> {
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
-                  controller: _descriptionController,
+                  controller: _textController,
                   maxLines: 20,
-                  decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder(), alignLabelWithHint: true),
-                  validator: (value) => value == null || value.isEmpty ? 'Description required' : null,
+                  decoration: const InputDecoration(labelText: 'Text', border: OutlineInputBorder(), alignLabelWithHint: true),
+                  validator: (value) => value == null || value.isEmpty ? 'Text required' : null,
                 ),
                 const SizedBox(height: 12),
                 FilledButton.tonalIcon(
@@ -53,8 +52,7 @@ class _NewNotePageState extends State<NewNotePage> {
                       return;
                     }
 
-                    Note note = Note(_titleController.text.trim(), _descriptionController.text.trim());
-                    await SharedNotes().addNote(note);
+                    await NoteService().createNote(_titleController.text.trim(), _textController.text.trim());
 
                     Navigator.of(context).pop();
                   },

@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 6,
-        title: Text('CloudNotes'),
+        title: Text('CloudNotes - Jobb Notater'),
         actions: [
           PopupMenuButton(
             onSelected: (value) {
