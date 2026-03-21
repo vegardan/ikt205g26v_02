@@ -49,50 +49,53 @@ class _NoteListWidgetState extends State<NoteListWidget> {
           return const Center(child: Text('No notes yet.'));
         }
 
-        return ListView.builder(
-          itemCount: notes.length,
-          itemBuilder: (context, index) {
-            final note = notes[index];
-            return Dismissible(
-              key: ValueKey('note-$index'),
-              direction: DismissDirection.startToEnd,
-              background: Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                color: Colors.red,
-                child: const Icon(Icons.delete, color: Colors.white),
-              ),
-              confirmDismiss: (direction) {
-                return showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Delete note?'),
-                    content: Text('Delete "${note.title}"?'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
-                      TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Delete')),
-                    ],
-                  ),
-                );
-              },
-              onDismissed: (_) async {
-                await NoteService().deleteNote(note.id);
-
-                SnackBarUtils.infoSnackBar(context, 'Note deleted');
-
-                refresh();
-              },
-              child: ListTile(
-                title: Text(note.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                subtitle: Text(note.text, maxLines: 1, overflow: TextOverflow.ellipsis),
-                onTap: () async {
-                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsPage(note)));
-
-                  setState(() {});
+        return RefreshIndicator(
+          onRefresh: () async => refresh(),
+          child: ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (context, index) {
+              final note = notes[index];
+              return Dismissible(
+                key: ValueKey('note-$index'),
+                direction: DismissDirection.startToEnd,
+                background: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  color: Colors.red,
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                confirmDismiss: (direction) {
+                  return showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete note?'),
+                      content: Text('Delete "${note.title}"?'),
+                      actions: [
+                        TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+                        TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Delete')),
+                      ],
+                    ),
+                  );
                 },
-              ),
-            );
-          },
+                onDismissed: (_) async {
+                  await NoteService().deleteNote(note.id);
+
+                  SnackBarUtils.infoSnackBar(context, 'Note deleted');
+
+                  refresh();
+                },
+                child: ListTile(
+                  title: Text(note.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  subtitle: Text(note.text, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsPage(note)));
+
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
         );
       },
     );
